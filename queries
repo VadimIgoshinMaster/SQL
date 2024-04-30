@@ -1,0 +1,26 @@
+#List all books available in the library
+SELECT * FROM Books WHERE available_copies > 0;
+
+#Find the number of copies available for a specific book
+SELECT available_copies FROM Books WHERE book_id = <book_id>;
+
+#List all books borrowed by a particular member
+SELECT Books.title, Books.author, Loans.loan_date, Loans.return_date
+FROM Loans
+JOIN Books ON Loans.book_id = Books.book_id
+WHERE Loans.member_id = <member_id>;
+
+
+#Calculate the total number of books borrowed each month
+SELECT EXTRACT(MONTH FROM loan_date) AS month, COUNT(*) AS total_borrowed
+FROM Loans
+GROUP BY EXTRACT(MONTH FROM loan_date)
+ORDER BY month;
+
+
+#Find the most popular genres among borrowed books
+SELECT genre, COUNT(*) AS total_borrowed
+FROM Books
+JOIN Loans ON Books.book_id = Loans.book_id
+GROUP BY genre
+ORDER BY total_borrowed DESC;
